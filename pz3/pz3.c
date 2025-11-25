@@ -2,8 +2,8 @@
 #include <linux/module.h>
 #include <linux/init.h>
 
-int __init init(void);
-void __exit cleanup(void);
+static int __init init(void);
+static void __exit cleanup(void);
 
 static int device_open(struct inode *inode, struct file *file) {
   pr_info("OPENING\n");
@@ -22,7 +22,7 @@ const struct file_operations fops = {
 
 unsigned int Major;
 
-int __init init(void) {
+static int __init init(void) {
   pr_info("Initializing\n");
 
   Major = register_chrdev(0, "my_driver", &fops);
@@ -36,7 +36,7 @@ int __init init(void) {
   return 0;
 }
 
-void __exit cleanup(void) {
+static void __exit cleanup(void) {
   pr_info("CLEANUP\n");
   unregister_chrdev(Major, "my_driver");
 }
